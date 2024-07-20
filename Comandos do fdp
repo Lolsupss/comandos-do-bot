@@ -1,0 +1,26 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local chatrem = ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
+
+local function sendHelpMessage()
+    -- Mensagens a serem enviadas
+    local messages = {
+        ";rule0: Karate",
+        ";rule1: Kungfu",
+        ";unafk: Anti afk"
+    }
+    
+    -- Enviar mensagens com um atraso de 1 segundo
+    for _, message in ipairs(messages) do
+        chatrem:FireServer(message, "All")
+        wait(1)  -- Esperar 1 segundo entre as mensagens
+    end
+end
+
+-- Conectar a função ao evento de comando de chat
+game.Players.PlayerAdded:Connect(function(player)
+    player.Chatted:Connect(function(message)
+        if message:lower() == ";help" then
+            sendHelpMessage()
+        end
+    end)
+end)
